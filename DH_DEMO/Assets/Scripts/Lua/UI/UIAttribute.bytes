@@ -1,0 +1,80 @@
+require("Assets/Scripts/Lua/UI/UIView.lua")
+Global.p_hp_obj = nil
+Global.p_mp_obj = nil
+Global.p_sp_obj = nil
+Global.r_hp_obj = nil
+Global.r_mp_obj = nil
+Global.r_sp_obj = nil
+local p_hp_view = nil
+local p_mp_view = nil
+local p_sp_view = nil
+local r_hp_view = nil
+local r_mp_view = nil
+local r_sp_view = nil
+local p_hp_material = nil
+local p_mp_material = nil
+local p_sp_material = nil
+local r_hp_material = nil
+local r_mp_material = nil
+local r_sp_material = nil
+
+local play_attri = nil
+local rivial_attri = nil
+local play_effect = nil
+local rivial_effect = nil
+function Global.Awake()
+    p_hp_view = UIView:New(p_hp_obj.gameObject)
+    p_mp_view = UIView:New(p_mp_obj.gameObject)
+    p_sp_view = UIView:New(p_sp_obj.gameObject)
+
+    p_hp_material = p_hp_obj:GetComponent(typeof(UI.Image)).material
+    p_mp_material = p_mp_obj:GetComponent(typeof(UI.Image)).material
+    p_sp_material = p_sp_obj:GetComponent(typeof(UI.Image)).material
+
+    r_hp_view = UIView:New(r_hp_obj.gameObject)
+    r_mp_view = UIView:New(r_mp_obj.gameObject)
+    r_sp_view = UIView:New(r_sp_obj.gameObject)
+    r_hp_material = r_hp_obj:GetComponent(typeof(UI.Image)).material
+    r_mp_material = r_mp_obj:GetComponent(typeof(UI.Image)).material
+    r_sp_material = r_sp_obj:GetComponent(typeof(UI.Image)).material
+
+    play_attri,rivial_attri = EventSystem.Send("GetAttri")
+    play_effect,rivial_effect = EventSystem.Send("GetEffect")
+end
+
+function Global.Update()
+    if play_attri == nil or rivial_attri==nil then
+        play_attri,rivial_attri = EventSystem.Send("GetAttri")
+    end
+    if play_effect == nil or rivial_effect == nil then
+        play_effect,rivial_effect = EventSystem.Send("GetEffect")
+    end
+    if play_attri ~= nil and rivial_attri ~= nil then
+        if play_attri.flag == true then
+            if play_attri.is_alive == false then
+                print("死掉了A")
+                EventSystem.Send("EndFight",false)
+            end
+            p_hp_material:SetFloat("_Percent",play_attri:GetPercentHP())
+            p_mp_material:SetFloat("_Percent",play_attri:GetPercentMP())
+            local sp = play_attri:GetPercentSP()
+            p_sp_material:SetFloat("_Percent",sp)
+            local color = play_effect.shield.color
+            play_effect.shield.color = UE.Color(color.r,color.g,color.b,sp)
+            play_attri.flag = false
+        end
+        if rivial_attri.flag == true then
+            if  play_attri.is_alive == false then
+                print("死掉了B")
+                EventSystem.Send("EndFight",true)
+            end
+            r_hp_material:SetFloat("_Percent",rivial_attri:GetPercentHP())
+            r_mp_material:SetFloat("_Percent",rivial_attri:GetPercentMP())
+            local sp = rivial_attri:GetPercentSP()
+            r_sp_material:SetFloat("_Percent",sp)
+            local color = rivial_effect.shield.color
+            rivial_effect.shield.color = UE.Color(color.r,color.g,color.b,sp)
+            rivial_attri.flag = false
+        end
+    end
+end

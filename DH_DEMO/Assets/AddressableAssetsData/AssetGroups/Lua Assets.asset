@@ -1,0 +1,230 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Lua Assets
+  m_EditorClassIdentifier: 
+  m_GroupName: Lua Assets
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1f75a4c9a5144b44e9565f4a69944caa
+  m_SerializeEntries:
+  - m_GUID: e87feaa48873cd04d81971c2189e6541
+    m_Address: Assets/Scripts/Lua/Dedicated/Overture/OvertureManager.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 5dfc188f2273d194daf5b080e22ac3ea
+    m_Address: framework.App
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 16d980ef1fc44b048b88b903d1058418
+    m_Address: framework.LogUtils
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 3ca4335ff3357f040bad17547b26f5f1
+    m_Address: app.Global
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 3093b7346d9e69840b5c55822d4e6226
+    m_Address: Assets/Scripts/Lua/Dedicated/TestScene/TestScene.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 05ba56844ec53bd4192d96cd1cfcc2fc
+    m_Address: Assets/Scripts/Lua/Ship/Ship.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: fb91d45e5d432724c9f630563ebbf7b3
+    m_Address: framework.SharedTools
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 42af5a3aeab2ddb4db3b63de4316ed44
+    m_Address: Event.ExEventSystem
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: fd90f6519d0b1654e87249b8822f1f04
+    m_Address: Assets/Scripts/Lua/Fight/BagSystem.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: a5108abdd6ef5b547bd3b2a8f3f06a5a
+    m_Address: Assets/Scripts/Lua/Fight/CardsControl.luas
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 2b2e0f26a58be8740a0cd7bd76ad5bf5
+    m_Address: Assets/Scripts/Lua/Fight/StoreSystem.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: b8031aa170ef1aa4ca867d561adbfdc1
+    m_Address: Assets/Scripts/Lua/EventSystem.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 4d37d38e6c887a84c8daecd0208f521f
+    m_Address: Assets/Scripts/Lua/Fight/RoleAttribute.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: d009dc0daf99cd748aaacacecb61fa02
+    m_Address: Assets/Scripts/Lua/Fight/BaseCard.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: d44d459140dc0734395ea8bdaf1f865a
+    m_Address: Assets/Scripts/Lua/Fight/CardsSystem.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: df4e0ffab181d4c449d2a81f436997b4
+    m_Address: Assets/Scripts/Lua/Dedicated/Overture/UI/loginpage.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: cb348be15e01f964fb5276783fdcba55
+    m_Address: Assets/Scripts/Lua/Dedicated/Overture/SceneTran.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 5891b34064af6a4498466f3b51dad7c4
+    m_Address: Assets/Scripts/Lua/Fight/SkillEffect.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: e4f650a32531734419ae07fa1e458cfa
+    m_Address: Assets/Scripts/Lua/EffectVoice.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: fd56fc3a4dec23d46b64ae27baf54f19
+    m_Address: Assets/Scripts/Lua/UI/UIEndFight.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 2512f224983525347bc4bd6328a6f88a
+    m_Address: Assets/Scripts/Lua/Fight/CardEffectAndDisplay.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: e4b067f773cbd244198caa85ee6d4211
+    m_Address: Assets/Scripts/Lua/UI/UIView.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: ba745e14ac49a42498392ef1943ba4b2
+    m_Address: Assets/Scripts/Lua/UI/UIRudder.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 28b5dbd419dcf494589a305f5baf9c0f
+    m_Address: Assets/Scripts/Lua/UI/UIModel.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: aeb2c0a413526b84eafb2928683a6781
+    m_Address: Assets/Scripts/Lua/UI/UIManager.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 10d0a0dceb4a2c6418b398a5fe8a1c88
+    m_Address: Assets/Scripts/Lua/UI/UICardSet.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 8e388364cfad6d34e95793e707a1bd12
+    m_Address: Assets/Scripts/Lua/UI/UIButton.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 1e979871dba41b942b1a6e649c509a59
+    m_Address: Assets/Scripts/Lua/UI/UIAttribute.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 3180dacf04dd7fa439fb99295bff5784
+    m_Address: Assets/Scripts/Lua/vector.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: f0566627eefce6d4fbf9387ebc9c5710
+    m_Address: Assets/Scripts/Lua/UI/ChatUI.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 92c983e32ad481c42acbf10a186f9949
+    m_Address: Assets/Scripts/Lua/SourceManager
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 65d8cc429cd6455409adfeb716862b43
+    m_Address: Assets/Scripts/Lua/ShipsManager.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 89bb96de9a365054c8f551beed31eff7
+    m_Address: Assets/Scripts/Lua/Register.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 2043c9fed0862824180ff9e9f79760ea
+    m_Address: Assets/Scripts/Lua/move.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 87b85bdabc897e64c9c9c903c0660994
+    m_Address: Assets/Scripts/Lua/LogIn.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 704c01e91cb3c4e43a2a490f076b86ec
+    m_Address: Assets/Scripts/Lua/UI/InitFightSence.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 26eb55eed52abab40986f33223038e0b
+    m_Address: Assets/Scripts/Lua/UI/UIAcceptFight.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 9a01cf531b02e9745bab7431fcea74fd
+    m_Address: Assets/Scripts/Lua/UI/UIStartFight.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: b514acf8c740e8e428ea7f0abe2d1239
+    m_Address: Assets/Scripts/Lua/UI/UICanvas.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: d218a8e3338e54048a838f73701856c0
+    m_Address: Assets/Scripts/Lua/SenceLoad.lua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: b68f11c15ad56b147b6cd70d291700ee
+    m_Address: Assets/Scripts/Lua/Fight/FightSystem.lu
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: c976ae5b7ddd3e74c86a7b591bcfcc13, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e4ff962c9d5945c4da1db5de56831dfd, type: 2}
+    - {fileID: 11400000, guid: 23df9908985f5dc40b573a14b18304e1, type: 2}

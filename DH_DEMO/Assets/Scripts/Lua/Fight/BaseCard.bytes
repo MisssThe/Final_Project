@@ -1,0 +1,58 @@
+-- -- require("framework.SharedTools")
+require("Assets/Scripts/Lua/EventSystem.lua")
+print("loaddddddddddddd")
+local  card_move = {}
+card_move.old_pos = nil
+card_move.max_speed = 1
+card_move.move_speed = 0.15
+card_move.index = nil
+card_move.init_pos = nil
+card_move.material = cs_self.gameObject:GetComponent(typeof(UI.Image)).material
+card_move.percent = 0
+card_move.flag = false
+function Global.Awake()
+--     if cs_self ~= nil then
+--         card_move.parent = cs_self.transform.parent
+--         card_move.material = cs_self.gameObject:GetComponent(typeof(UI.Image)).material
+--     end
+end
+local now_parent = nil
+
+function Global.OnBeginDrag(data)
+    -- 开始拖拽时将卡牌移出grid并记录位置和父物体
+    card_move.old_pos = data.position
+    card_move.index = cs_self.transform:GetSiblingIndex()
+    card_move.init_pos = cs_self.transform.position
+    now_parent = cs_self.transform.parent
+    cs_self.transform:SetParent(UE.GameObject.FindGameObjectsWithTag("Canvas")[0].transform)
+    -- 装上特定material
+    -- local height = UE.Screen.height
+    -- card_move.move_speed = card_move.max_speed * height
+end
+function Global.OnDrag(data)
+    local move = (data.position - card_move.old_pos) * card_move.move_speed
+    cs_self.transform.position = cs_self.transform.position + UE.Vector3(0,move.y,0)
+    card_move.old_pos = data.position
+    card_move.percent = card_move.percent + move.y * 0.1
+    if (card_move.percent > 1) then
+        card_move.flag = true
+    end
+    card_move.material:SetFloat("_Percent",card_move.percent)
+end
+
+function Global.OnEndDrag(data)
+    if (card_move.flag) and EventSystem.Send("GetIsSelf") then
+        print("卡牌使用了")
+        -- 卡牌被使用销毁卡牌
+        card_move.flag = EventSystem.Send("SendCard",cs_self.gameObject.name,true)
+        UE.Object.Destroy(cs_self.gameObject)
+    else
+        -- 停止拖动时卡牌归为
+        print("卡牌没啥用")
+        print(cs_self.gameObject.name)
+        cs_self.transform:SetParent(now_parent)
+        cs_self.transform:SetSiblingIndex(card_move.index)
+        card_move.material:SetFloat("_Percent",0)
+        card_move.percent = 0
+    end
+end

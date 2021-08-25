@@ -1,0 +1,56 @@
+
+
+local cardset_view = {}
+local cardset_list = {}
+local card_system = nil
+function Global.Awake()
+    cardset_view = UIView:New(cs_self.gameObject)
+    local card_system = EventSystem.Send("GetCardSystem")
+    print("card ys是空的")
+    print(card_system == nil)
+end
+local function CreatCard(card_name)
+    local t_card = EventSystem.Send("GetBaseCard",card_name)
+    if t_card ~= nil then
+        local i_card = UE.Object.Instantiate(t_card)
+        if i_card ~= nil then
+            i_card.transform:SetParent(cs_self.transform)
+            i_card.transform.localScale = UE.Vector3(1.5,2.5,1)
+            i_card.transform.localPosition = UE.Vector3(0,0,0)
+            local lua_beh = i_card.gameObject:AddComponent(typeof(CS.DefaultLuaBehaviour))
+            lua_beh.Key = "Assets/Scripts/Lua/Fight/BaseCard.lua"
+            lua_beh:Restart()
+            table.insert(cardset_list,i_card)
+        end
+    end
+end
+
+local card_system_flag = true
+
+function Global.Update()
+    -- 监控战斗系统中的卡牌系统
+    if EventSystem.Send("GetFightStatus") then
+        card_system = EventSystem.Send("GetCardSystem")
+    end
+
+    if card_system ~= nil then
+        if card_system.flag2 then
+            -- 更新卡牌显示
+            print("更新卡牌")
+            local card_set = card_system:GetNewCard()
+            for i,v in pairs(card_set) do
+                CreatCard(v)
+            end
+        end
+    end
+end
+
+function cardset_view.Clear()
+    local child_cards = cs_self.gameObject:GetComponentsInChildren(typeof(UE.Transform))
+    local child_length = child_cards.Length - 1
+    for i = 1,child_length,1 do
+        UE.GameObject.Destroy(child_cards[i].gameObject)
+    end
+end
+
+EventSystem.Add("ClearCardSet",false,cardset_view.Clear)

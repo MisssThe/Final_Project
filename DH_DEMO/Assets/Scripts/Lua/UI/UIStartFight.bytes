@@ -1,0 +1,20 @@
+require("Assets/Scripts/Lua/UI/UIView.lua")
+require("Assets/Scripts/Lua/EventSystem.lua")
+-- require("")
+local start_view = UIView:New(cs_self.gameObject)
+local function StartFight()
+    -- CS.LogUtilStatic.Log("aaaaaaaaaaaaa" .. FightSystem.player_info.rivial_name .. "," .. FightSystem.player_info.self_name)
+    if FightSystem.player_info.rivial_name ~= nil and FightSystem.player_info.self_name ~= nil then
+        -- CS.LogUtilStatic.Log("bbbbbbbbbbb")
+    -- 发起战斗
+        CS.NetWork.SendToFight(FightSystem.player_info.self_name,FightSystem.player_info.rivial_name)
+        start_view:Hide()
+    end
+    -- CS.LogUtilStatic.Log("cccccccccccccc")
+end
+local a_b = cs_self.gameObject:GetComponent(typeof(UI.Button))
+a_b.onClick:AddListener(StartFight)
+
+local canvas = UE.GameObject.FindGameObjectsWithTag("Canvas")[0]
+cs_self.gameObject.transform:SetParent(canvas.transform,false)
+cs_self.transform.localPosition = UE.Vector3(0,0,0)

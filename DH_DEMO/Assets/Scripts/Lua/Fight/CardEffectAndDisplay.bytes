@@ -1,0 +1,293 @@
+local magic_flag = false
+local max_time = 3
+local now_time = 0
+local now_buff = nil
+local magic_obj = nil
+local magic_obj1 = nil
+local camera_skill = UE.GameObject.FindGameObjectsWithTag("MainCamera")[0].gameObject:GetComponent(typeof(CS.AfterScreen))
+print("lllsadasdasdasd")
+print(camera_skill.is_rain)
+if camera_skill == nil then
+  print("摄像机没找到")
+  else
+  print("摄像机：" .. camera_skill.name)
+end
+local function UseMagic(color,flag)
+   local magic_animation = nil
+   local magic_material = nil
+   if flag then
+       magic_material = FightSystem.Effect.player_effect.buff.buff_material
+       magic_animation = FightSystem.Effect.player_effect.buff.buff_animation
+       magic_obj = FightSystem.Effect.player_effect.buff.buff_obj
+       magic_obj1 = FightSystem.Effect.player_effect.buff.buff_particel
+   else
+       magic_material = FightSystem.Effect.rivial_effect.buff.buff_material
+       magic_animation = FightSystem.Effect.rivial_effect.buff.buff_animation
+       magic_obj = FightSystem.Effect.rivial_effect.buff.buff_obj
+       magic_obj1 = FightSystem.Effect.rivial_effect.buff.buff_particel
+   end
+   magic_obj.gameObject:SetActive(true)
+   magic_obj1.gameObject:SetActive(true)
+   magic_animation:Play('Magic')
+   for i = 0,4,1 do
+       magic_material[i].material.color = color
+   end
+   magic_obj1:GetComponent(typeof(UE.ParticleSystem)).main.startColor = UE.ParticleSystem.MinMaxGradient(color)
+   magic_flag = true
+   now_time = 0
+end
+local function UseAttack(flag)
+  local attack_animation = nil
+   if flag then
+       -- 对方挨打
+       attack_animation = FightSystem.Effect.rivial_effect.attack
+   else
+       -- 自己挨打
+       attack_animation = FightSystem.Effect.player_effect.attack
+   end
+   attack_animation:Play('Attack')
+end
+local sleep_flag = false
+local s_max_time = 2
+local s_now_time = 0
+local sleep_obj = nil
+function Global.Update()
+   if magic_flag == true then
+       if now_time > max_time then
+        now_time = 0
+        magic_obj.gameObject:SetActive(false)
+        magic_obj1.gameObject:SetActive(false)
+        magic_flag = false
+       else
+       now_time = now_time + UE.Time.deltaTime
+       end
+   else
+       now_time = 0
+   end
+   if sleep_flag == true then
+       if s_now_time > s_max_time then
+        s_now_time = 0
+        sleep_obj.gameObject:SetActive(false)
+        sleep_flag = false
+       else
+        s_now_time = s_now_time + UE.Time.deltaTime
+       end
+   else
+       s_now_time = 0
+   end
+end
+---------------------------- 攻击牌 ----------------------------
+--------------普通攻击--------------
+local NormalAttack = {}
+function NormalAttack.Effect(play1,play2)
+  local real_d = play1:Attack(3)
+  for i = 0,1,1 do
+      play2:ReduceHP(real_d,true)
+  end
+end
+function NormalAttack.Display(flag)
+  EventSystem.Send('PlayAttackCard')
+  UseAttack(flag)
+end
+EventSystem.Add('NormalAttack_Effect',false,NormalAttack.Effect)
+EventSystem.Add('NormalAttack_Display',false,NormalAttack.Display)
+--------------奋力一击--------------
+local ToBlow = {}
+function ToBlow.Effect(play1,play2)
+  local real_d = play1:Attack(1)
+  for i = 0,10,1 do
+      play2:ReduceHP(real_d,false)
+  end
+end
+function ToBlow.Display(flag)
+  EventSystem.Send('PlayAttackCard')
+  UseAttack(flag)
+end
+EventSystem.Add('ToBlow_Effect',false,ToBlow.Effect)
+EventSystem.Add('ToBlow_Display',false,ToBlow.Display)
+
+local rivial = nil
+local play = nil
+
+
+--------------连环打击--------------
+local OneTwoPunch = {}
+function OneTwoPunch.Effect(play1,play2)
+  local real_d = play1:Attack(10)
+  for i = 0,1,1 do
+      play2:ReduceHP(real_d,false)
+  end
+end
+function OneTwoPunch.Display(flag)
+  EventSystem.Send('PlayAttackCard')
+  UseAttack(flag)
+end
+EventSystem.Add('OneTwoPunch_Effect',false,OneTwoPunch.Effect)
+EventSystem.Add('OneTwoPunch_Display',false,OneTwoPunch.Display)
+--------------盾击--------------
+local ShieldBash = {}
+function ShieldBash.Effect(play1,play2)
+  local real_d = play1:Attack(1)
+  real_d = real_d + play1.shield_point.now_sp // 2
+  for i = 0,5,1 do
+      play2:ReduceHP(real_d,false)
+  end
+end
+function ShieldBash.Display(flag)
+  EventSystem.Send('PlayAttackCard')
+  UseAttack(flag)
+end
+EventSystem.Add('ShieldBash_Effect',false,ShieldBash.Effect)
+EventSystem.Add('ShieldBash_Display',false,ShieldBash.Display)
+--------------穿刺长矛--------------
+local PunctureSpear = {}
+function PunctureSpear.Effect(play1,play2)
+  local real_d = play1:Attack(1)
+  -- 获取敌方防御力
+  real_d = real_d + play2.shield_point.now_sp // 3
+  for i = 0,5,1 do
+      play2:ReduceHP(real_d,turu)
+  end
+end
+function PunctureSpear.Display(flag)
+  EventSystem.Send('PlayAttackCard')
+  UseAttack(flag)
+end
+EventSystem.Add('PunctureSpear_Effect',false,PunctureSpear.Effect)
+EventSystem.Add('PunctureSpear_Display',false,PunctureSpear.Display)
+-----------------咳血-----------------
+-- 回复造成的伤害，溢出伤害转换为护甲
+local Hemoptysis = {}
+
+---------------------------- 辅助牌 ----------------------------
+--------------力量祝福--------------
+local BlessingOfStrenth = {}
+function BlessingOfStrenth.Effect(play1,play2)
+  play1:AddBuff(2,1,'IMD')
+end
+function BlessingOfStrenth.Display(flag)
+  flag = (flag and true) or not(flag or true)
+  UseMagic(UE.Color(1,0.87,0.67,1),flag)
+  EventSystem.Send('PlayAssitCard')
+end
+EventSystem.Add('BlessingOfStrenth_Effect',false,BlessingOfStrenth.Effect)
+EventSystem.Add('BlessingOfStrenth_Display',false,BlessingOfStrenth.Display)
+--------------节约--------------
+local Economy = {}
+function Economy.Effect(play1,play2)
+  play1:AddBuff(3,-1,'IMC')
+end
+function Economy.Display(flag)
+  flag = (flag and true) or not(flag or true)
+  UseMagic(UE.Color(0,0,1,1),flag)
+  EventSystem.Send('PlayAssitCard')
+end
+EventSystem.Add('Economy_Effect',false,Economy.Effect)
+EventSystem.Add('Economy_Display',false,Economy.Display)
+--------------虚弱--------------
+local Weakness = {}
+function Weakness.Effect(play1,play2)
+  play2:AddDebuff(2,2,'IYD')
+end
+function Weakness.Display(flag)
+  flag = (flag and false) or not(flag or false)
+  UseMagic(UE.Color(0,0,0,1),flag)
+  EventSystem.Send('PlayAssitCard')
+end
+EventSystem.Add('Weakness_Effect',false,Weakness.Effect)
+EventSystem.Add('Weakness_Display',false,Weakness.Display)
+--------------补充营养--------------
+local ExtraNutrition = {}
+function ExtraNutrition.Effect(play1,play2)
+  play1:AddBuff(2,5,'ITE')
+end
+function ExtraNutrition.Display(flag)
+  flag = (flag and true) or not(flag or true)
+  UseMagic(UE.Color(0.8,0,0,1),flag)
+  EventSystem.Send('PlayAssitCard')
+end
+EventSystem.Add('ExtraNutrition_Effect',false,ExtraNutrition.Effect)
+EventSystem.Add('ExtraNutrition_Display',false,ExtraNutrition.Display)
+----------------神圣领域--------------
+-- 接下来两回合记录受到的伤害，结束后恢复伤害，并对地方造成一半伤害
+
+local DivineRealms = {}
+function DivineRealms.Effect(play1,play2)
+  play1.is_record = true
+  rivial = play2
+  FightSystem.AddEffect(2,DivineRealms.EndFunc)
+end
+function DivineRealms.Display(flag)
+  flag = (flag and true) or not(flag or true)
+  UseMagic(UE.Color(1,1,1,1),flag)
+  EventSystem.Send('PlayAssitCard')
+end
+function DivineRealms.EndFunc()
+  play1.is_record = 0
+  rivial.ReduceHP(play1.record_num)
+  play1.record_num = 0
+end
+EventSystem.Add('DivineRealms_Effect',false,DivineRealms.Effect)
+EventSystem.Add('DivineRealms_Display',false,DivineRealms.Display)
+
+
+---------------------------- 咒术牌 ----------------------------
+--------------法力风暴--------------
+-- 消耗所有法力值造成伤害，接下来两回合不消耗法力值
+local ManaStorm = {}
+function ManaStorm.Effect(play1,play2)
+print("使用法力风暴")
+  local attack = play1.magic_point.now_mp
+  play1.magic_point.now_mp = 0
+  play1.flag = true
+  play1.magic_point.is_mp = false
+  attack = play1:Attack(attack)
+  play2:ReduceHP(attack)
+  play = play1
+  FightSystem.AddEffect(2,ManaStorm.EndFunc)
+end
+function ManaStorm.Display(flag)
+  --播放下雨声，持续两回合
+  camera_skill.is_rain = true
+  EventSystem.Send("PlayRain")
+end
+function ManaStorm.EndFunc()
+  -- 关闭特效,开启法力消耗
+  play.magic_point.is_mp = true
+  camera_skill.is_rain = false
+  EventSystem.Send("EndLongVoice")
+end
+EventSystem.Add('ManaStorm_Effect',false,ManaStorm.Effect)
+EventSystem.Add('ManaStorm_Display',false,ManaStorm.Display)
+
+--------------睡觉--------------
+local Sleep = {}
+function Sleep.Effect(play1,play2)
+  play1:IncreaseHP(10)
+  play1:ReduceMP(5)
+end
+function Sleep.Display(flag)
+  -- 播放呼噜声，播放睡觉动画
+  EventSystem.Send("PlaySleep")
+  sleep_flag = true
+  if flag then
+  print(FightSystem.Effect.player_effect.conjure == nil)
+  print(FightSystem.Effect.player_effect.conjure.sleep == nil)
+    FightSystem.Effect.player_effect.conjure.sleep.gameObject:SetActive(true)
+    sleep_obj = FightSystem.Effect.player_effect.conjure.sleep.gameObject
+  else
+    FightSystem.Effect.rivial_effect.conjure.sleep.gameObject:SetActive(true)
+    sleep_obj = FightSystem.Effect.rivial_effect.conjure.sleep.gameObject
+  end
+end
+EventSystem.Add('Sleep_Effect',false,Sleep.Effect)
+EventSystem.Add('Sleep_Display',false,Sleep.Display)
+
+--
+--------------雷云--------------
+-- 消耗所有法力值造成伤害，接下来两回合不消耗法力值
+-- local ThunderCloud = {}
+-- function ThunderCloud.Effect(play1,play2)
+-- end
+-- function ThunderCloud.Display(flag)
+-- end
